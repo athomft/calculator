@@ -51,7 +51,7 @@ int main()
     else if (op == 4)
     {
         ask();
-        c = a / b;
+        c = a - b;
         std::cout << "The result of " << a << " minus " << b << " is " << c;
     }
     else if (op == 5)
