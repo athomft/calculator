@@ -1,65 +1,99 @@
+
 #include <iostream>
+#include <limits>
 using namespace std;
 
-int main()
-{
-    char restart;
+// Function declarations
+int multiply(int a, int b) { return a * b; }
+int divide(int a, int b) { return a / b; }
+int add(int a, int b) { return a + b; }
+int subtract(int a, int b) { return a - b; }
 
-    do
-    {
-        int a, b, c, op;
+// Function to get a valid integer from user
+int getInt(const string& prompt) {
+    int value;
+    while (true) {
+        cout << prompt;
+        cin >> value;
+        if (cin.fail()) {
+            cout << "Invalid input. Please enter an integer." << endl;
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        } else {
+            return value;
+        }
+    }
+}
 
+// Function to get a valid menu option
+int getMenuOption() {
+    int op;
+    while (true) {
         cout << "1. Multiplication\n";
         cout << "2. Division\n";
         cout << "3. Addition\n";
         cout << "4. Subtraction\n";
         cout << "5. Quit\n";
-
         cout << "Choose the operator (1/2/3/4) or 5 to quit: ";
         cin >> op;
+        if (cin.fail() || op < 1 || op > 5) {
+            cout << "Invalid operation. Please enter a number between 1 and 5." << endl;
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        } else {
+            return op;
+        }
+    }
+}
 
-        if (op >= 1 && op <= 4)
-        {
-            cout << "Enter the first number: ";
-            cin >> a;
-            cout << "Enter the second number: ";
-            cin >> b;
+int main() {
+    char restart = 'Y';
+    while (restart == 'Y' || restart == 'y') {
+        int op = getMenuOption();
+        if (op == 5) {
+            cout << "Exiting calculator. Goodbye!" << endl;
+            break;
         }
 
-        switch (op)
-        {
-        case 1:
-            c = a * b;
-            cout << "The result of " << a << " times " << b << " is " << c;
-            break;
-        case 2:
-            if (b == 0)
-            {
-                cout << "Cannot be divided by 0" << endl;
-            }
-            else
-            {
-                c = a / b;
-                cout << "The result of " << a << " divided by " << b << " is " << c;
-            }
-            break;
-        case 3:
-            c = a + b;
-            cout << "The result of " << a << " plus " << b << " is " << c;
-            break;
-        case 4:
-            c = a - b;
-            cout << "The result of " << a << " minus " << b << " is " << c;
-            break;
-        case 5:
-            return 0; // Exit the program
-        default:
-            cout << "Invalid operation\n";
+        int a = getInt("Enter the first number: ");
+        int b = getInt("Enter the second number: ");
+        int c;
+        bool valid = true;
+
+        switch (op) {
+            case 1:
+                c = multiply(a, b);
+                cout << "The result of " << a << " times " << b << " is " << c;
+                break;
+            case 2:
+                if (b == 0) {
+                    cout << "Cannot be divided by 0" << endl;
+                    valid = false;
+                } else {
+                    c = divide(a, b);
+                    cout << "The result of " << a << " divided by " << b << " is " << c;
+                }
+                break;
+            case 3:
+                c = add(a, b);
+                cout << "The result of " << a << " plus " << b << " is " << c;
+                break;
+            case 4:
+                c = subtract(a, b);
+                cout << "The result of " << a << " minus " << b << " is " << c;
+                break;
         }
 
-        cout << "\nDo you want to restart the program (Y/N)? ";
-        cin >> restart;
-    } while (restart == 'Y' || restart == 'y');
-
+        if (valid) {
+            cout << "\nDo you want to restart the program (Y/N)? ";
+            cin >> restart;
+            // Clear input buffer in case user enters more than one character
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        } else {
+            // On invalid calculation (e.g., division by zero), always restart
+            restart = 'Y';
+        }
+        cout << endl;
+    }
     return 0;
 }
