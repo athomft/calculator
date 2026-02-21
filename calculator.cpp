@@ -1,22 +1,25 @@
 
+
 #include <iostream>
 #include <limits>
 using namespace std;
 
-// Function declarations
-int multiply(int a, int b) { return a * b; }
-int divide(int a, int b) { return a / b; }
-int add(int a, int b) { return a + b; }
-int subtract(int a, int b) { return a - b; }
 
-// Function to get a valid integer from user
-int getInt(const string& prompt) {
-    int value;
+// Function declarations for basic arithmetic (now using double)
+double multiply(double a, double b) { return a * b; }
+double divide(double a, double b) { return a / b; }
+double add(double a, double b) { return a + b; }
+double subtract(double a, double b) { return a - b; }
+
+
+// Function to get a valid floating-point number from user
+double getNumber(const string& prompt) {
+    double value;
     while (true) {
         cout << prompt;
         cin >> value;
         if (cin.fail()) {
-            cout << "Invalid input. Please enter an integer." << endl;
+            cout << "Invalid input. Please enter a number." << endl;
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
         } else {
@@ -25,10 +28,11 @@ int getInt(const string& prompt) {
     }
 }
 
-// Function to get a valid menu option
+// Function to get a valid menu option from user
 int getMenuOption() {
     int op;
     while (true) {
+        cout << "\n===== Simple Calculator =====\n";
         cout << "1. Multiplication\n";
         cout << "2. Division\n";
         cout << "3. Addition\n";
@@ -46,6 +50,7 @@ int getMenuOption() {
     }
 }
 
+// Main program loop
 int main() {
     char restart = 'Y';
     while (restart == 'Y' || restart == 'y') {
@@ -55,19 +60,21 @@ int main() {
             break;
         }
 
-        int a = getInt("Enter the first number: ");
-        int b = getInt("Enter the second number: ");
-        int c;
+
+        double a = getNumber("Enter the first number: ");
+        double b = getNumber("Enter the second number: ");
+        double c; // Result variable
         bool valid = true;
 
+        // Perform the selected operation
         switch (op) {
             case 1:
                 c = multiply(a, b);
                 cout << "The result of " << a << " times " << b << " is " << c;
                 break;
             case 2:
-                if (b == 0) {
-                    cout << "Cannot be divided by 0" << endl;
+                if (b == 0.0) {
+                    cout << "Error: Division by zero is undefined. Please try again." << endl;
                     valid = false;
                 } else {
                     c = divide(a, b);
@@ -84,6 +91,7 @@ int main() {
                 break;
         }
 
+        // Ask user if they want to restart, only if calculation was valid
         if (valid) {
             cout << "\nDo you want to restart the program (Y/N)? ";
             cin >> restart;
