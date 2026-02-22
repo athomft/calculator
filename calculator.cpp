@@ -1,18 +1,14 @@
-
-
 #include <iostream>
 #include <limits>
+#include <string>
+
 using namespace std;
 
-
-// Function declarations for basic arithmetic (now using double)
 double multiply(double a, double b) { return a * b; }
 double divide(double a, double b) { return a / b; }
 double add(double a, double b) { return a + b; }
 double subtract(double a, double b) { return a - b; }
 
-
-// Function to get a valid floating-point number from user
 double getNumber(const string& prompt) {
     double value;
     while (true) {
@@ -28,45 +24,49 @@ double getNumber(const string& prompt) {
     }
 }
 
-// Function to get a valid menu option from user
 int getMenuOption() {
-    int op;
+    string input;
     while (true) {
         cout << "\n===== Simple Calculator =====\n";
         cout << "1. Multiplication\n";
         cout << "2. Division\n";
         cout << "3. Addition\n";
         cout << "4. Subtraction\n";
-        cout << "5. Quit\n";
-        cout << "Choose the operator (1/2/3/4) or 5 to quit: ";
-        cin >> op;
-        if (cin.fail() || op < 1 || op > 5) {
-            cout << "Invalid operation. Please enter a number between 1 and 5." << endl;
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        } else {
-            return op;
+        cout << "Type 'q' to quit\n";
+        cout << "Choose the operator (1/2/3/4) or 'q' to quit: ";
+        cin >> input;
+        if (input == "q" || input == "Q") {
+            return 0;
         }
+        try {
+            int op = std::stoi(input);
+            if (op >= 1 && op <= 4) {
+                return op;
+            } else {
+                cout << "Invalid operation. Please enter 1, 2, 3, 4 or 'q' to quit." << endl;
+            }
+        } catch (...) {
+            cout << "Invalid input. Please enter 1, 2, 3, 4 or 'q' to quit." << endl;
+        }
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
     }
 }
 
-// Main program loop
 int main() {
     char restart = 'Y';
     while (restart == 'Y' || restart == 'y') {
         int op = getMenuOption();
-        if (op == 5) {
+        if (op == 0) {
             cout << "Exiting calculator. Goodbye!" << endl;
             break;
         }
 
-
         double a = getNumber("Enter the first number: ");
         double b = getNumber("Enter the second number: ");
-        double c; // Result variable
+        double c;
         bool valid = true;
 
-        // Perform the selected operation
         switch (op) {
             case 1:
                 c = multiply(a, b);
@@ -91,14 +91,11 @@ int main() {
                 break;
         }
 
-        // Ask user if they want to restart, only if calculation was valid
         if (valid) {
             cout << "\nDo you want to restart the program (Y/N)? ";
             cin >> restart;
-            // Clear input buffer in case user enters more than one character
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
         } else {
-            // On invalid calculation (e.g., division by zero), always restart
             restart = 'Y';
         }
         cout << endl;
