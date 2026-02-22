@@ -4,6 +4,7 @@ calculator.ilk
 calculator.obj
 calculator.pdb
 vc140.pdb
+*.exe
 
 # VS Code settings (optional)
 .vscode/
