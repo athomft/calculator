@@ -19,6 +19,7 @@ double getNumber(const string& prompt) {
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
         } else {
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             return value;
         }
     }
@@ -41,6 +42,7 @@ int getMenuOption() {
         try {
             int op = std::stoi(input);
             if (op >= 1 && op <= 4) {
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 return op;
             } else {
                 cout << "Invalid operation. Please enter 1, 2, 3, 4 or 'q' to quit." << endl;
@@ -76,6 +78,7 @@ int main() {
                 if (b == 0.0) {
                     cout << "Error: Division by zero is undefined. Please try again." << endl;
                     valid = false;
+                    c = 0.0;  // unused when valid is false; avoids uninitialized value
                 } else {
                     c = divide(a, b);
                     cout << "The result of " << a << " divided by " << b << " is " << c;
